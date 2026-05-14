@@ -11,26 +11,26 @@ echo ""
 
 # Step 1: Ensure profiles.sh has execute permissions and run it
 echo "[1/5] Setting up Incus profiles..."
-chmod +x scripts/profiles.sh
+sudo chmod +x scripts/profiles.sh
 bash scripts/profiles.sh
 echo "✅ Profiles created successfully"
 echo ""
 
 # Step 2: Ensure network.sh has execute permissions and run it
 echo "[2/5] Creating OVN network for the lab..."
-chmod +x scripts/network.sh
+sudo chmod +x scripts/network.sh
 bash scripts/network.sh
 echo ""
 
 # Step 3: Ensure volumes.sh has execute permissions and run it
 echo "[3/5] Creating persistent storage volumes..."
-chmod +x scripts/volumes.sh
+sudo chmod +x scripts/volumes.sh
 bash scripts/volumes.sh
 echo ""
 
 # Step 4: Ensure containers.sh has execute permissions and run it
 echo "[4/5] Launching and configuring containers..."
-chmod +x scripts/containers.sh
+sudo chmod +x scripts/containers.sh
 bash scripts/containers.sh
 echo ""
 

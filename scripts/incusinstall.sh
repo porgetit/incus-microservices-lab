@@ -33,7 +33,7 @@ sudo apt-get update
 echo "Package lists updated."
 
 echo "Installing Incus, Incus client, and UI..."
-sudo apt-get install -y incus incus-client incus-ui-canonical
+sudo apt-get install -y incus incus-client incus-ui-canonical openvswitch-switch ovn-central ovn-host
 echo "Incus installed."
 
 echo "Step 3: Initializing Incus with minimal setup..."
@@ -45,3 +45,7 @@ sudo systemctl disable incus
 echo "Incus auto-start disabled."
 
 echo "Incus installation completed successfully."
+
+# Ensure setup-lab.sh has execute permissions and run it
+sudo chmod +x scripts/setup-lab.sh
+bash scripts/setup-lab.sh

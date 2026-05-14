@@ -39,5 +39,3 @@ sudo incus profile device add ceph root disk pool=default path=/
 echo "ceph profile created with limits.cpu=2 and limits.memory=2048MiB"
 
 echo "All profiles have been created successfully."
-echo "Listing all profiles:"
-sudo incus profile list
