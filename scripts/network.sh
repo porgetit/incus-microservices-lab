@@ -1,39 +1,41 @@
 #!/bin/bash
-# network.sh - Corrección para manejo de incusbr0
+
+echo "=========================================="
+echo "Starting network configuration..."
 
 set -e
 
-echo "Verificando estado de incusbr0..."
+echo "[1/5] Checking incusbr0 state as managed..."
 MANAGED=$(sudo incus network show incusbr0 | grep -E '^\s*managed:' | awk '{print $2}')
 
 if [ "$MANAGED" = "false" ]; then
-    echo "⚠️  incusbr0 existe pero NO es gestionado por Incus"
-    echo "Eliminando puente no gestionado..."
+    echo "incusbr0 bridge exists but it isn't managed by Incus"
+    echo "Deleting incusbr0..."
     sudo ip link set incusbr0 down
     sudo ip link delete incusbr0
     
-    echo "Recreando incusbr0 como red gestionada por Incus..."
+    echo "Recreating incusbr0 as a managed bridge by Incus..."
     sudo incus network create incusbr0 \
         ipv4.address=10.158.133.1/24 \
         ipv4.nat=true \
         ipv6.address=none
-    echo "✅ incusbr0 recreado como red gestionada"
+    echo "OK: incusbr0 has been recreated"
 else
-    echo "✅ incusbr0 ya es una red gestionada"
+    echo "OK: incusbr0 is a managed net by now"
 fi
 
-echo "Configurando Open vSwitch para OVN..."
+echo "[2/5] Setting up Open vSwitch for OVN..."
 sudo ovs-vsctl set open_vswitch . \
   external_ids:ovn-remote=unix:/run/ovn/ovnsb_db.sock \
   external_ids:ovn-encap-type=geneve \
   external_ids:ovn-encap-ip=127.0.0.1
-echo "✅ Open vSwitch configurado"
+echo "OK: Open vSwitch configured"
 
-echo "Conectando Incus a OVN..."
+echo "[3/5] Linking Incus to OVN..."
 sudo incus config set network.ovn.northbound_connection unix:/run/ovn/ovnnb_db.sock
-echo "✅ Incus conectado a OVN"
+echo "OK: Incus linked to OVN"
 
-echo "Preparando incusbr0 como uplink..."
+echo "[4/5] Preparing incusbr0 as uplink..."
 BRIDGE_IP=$(sudo incus network show incusbr0 | grep "ipv4.address" | awk '{print $2}' | cut -d'/' -f1)
 BASE=$(echo $BRIDGE_IP | cut -d'.' -f1-3)
 DHCP_RANGES="${BASE}.2-${BASE}.200"
@@ -43,12 +45,14 @@ sudo incus network set incusbr0 \
   ipv4.dhcp.ranges=$DHCP_RANGES \
   ipv4.ovn.ranges=$OVN_RANGES
 sudo incus network set incusbr0 ipv4.routes=10.100.0.0/24
-echo "✅ incusbr0 preparado como uplink"
+echo "OK: incusbr0 prepared as uplink"
 
-echo "Creando red OVN para el laboratorio..."
+echo "[5/5] Creating OVN lab-net for microservices lab..."
 sudo incus network create lab-net \
   --type=ovn \
   network=incusbr0 \
   ipv4.address=10.100.0.1/24 \
   ipv4.nat=false
-echo "✅ Red 'lab-net' creada"
+echo "OK: OVN 'lab-net' created"
+
+echo "All networks configurated"
