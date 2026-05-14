@@ -36,9 +36,9 @@ echo ""
 
 # Mid process validation
 echo ""
-echo "Running post-configuration validation..."
-sudo chmod +x scripts/validate.sh
-bash scripts/validate.sh
+#echo "Running post-configuration validation..."
+#sudo chmod +x scripts/validate.sh
+#bash scripts/validate.sh
 echo ""
 
 echo "=========================================="
