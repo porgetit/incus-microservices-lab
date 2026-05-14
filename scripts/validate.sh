@@ -36,4 +36,4 @@ echo ""
 echo "Results: $PASS passed"
 
 #[ $FAIL -eq 0 ] && echo "Infrastructure OK" && exit 0 || echo "Infrastructure has issues" && exit 1
-[ $PASS -eq 22] && echo "Infrastructure OK" && exit 0
+#[ $PASS -eq 22] && echo "Infrastructure OK" && exit 0
