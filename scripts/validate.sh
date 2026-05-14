@@ -1,69 +1,39 @@
 #!/bin/bash
 
-set -e
-
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m'
-
 PASS=0
 FAIL=0
-
-check() {
-    if eval "$1" >/dev/null 2>&1; then
-        echo -e "${GREEN}✅${NC} $2"
-        ((PASS++))
-    else
-        echo -e "${RED}❌${NC} $2"
-        ((FAIL++))
-    fi
-}
 
 echo "Validating Incus Lab Infrastructure..."
 echo ""
 
-# Networks
-check "sudo incus network show incusbr0" "incusbr0 exists"
-check "sudo incus network show lab-net" "lab-net OVN network exists"
+sudo incus network show incusbr0 >/dev/null 2>&1 && echo "OK: incusbr0 exists" && ((PASS++)) || echo "FAIL: incusbr0" && ((FAIL++))
+sudo incus network show lab-net >/dev/null 2>&1 && echo "OK: lab-net OVN" && ((PASS++)) || echo "FAIL: lab-net" && ((FAIL++))
 
-# Profiles
-check "sudo incus profile show ctl" "Profile: ctl"
-check "sudo incus profile show api" "Profile: api"
-check "sudo incus profile show core" "Profile: core"
-check "sudo incus profile show db" "Profile: db"
-check "sudo incus profile show mon" "Profile: mon"
-check "sudo incus profile show ceph" "Profile: ceph"
+sudo incus profile show ctl >/dev/null 2>&1 && echo "OK: Profile ctl" && ((PASS++)) || echo "FAIL: Profile ctl" && ((FAIL++))
+sudo incus profile show api >/dev/null 2>&1 && echo "OK: Profile api" && ((PASS++)) || echo "FAIL: Profile api" && ((FAIL++))
+sudo incus profile show core >/dev/null 2>&1 && echo "OK: Profile core" && ((PASS++)) || echo "FAIL: Profile core" && ((FAIL++))
+sudo incus profile show db >/dev/null 2>&1 && echo "OK: Profile db" && ((PASS++)) || echo "FAIL: Profile db" && ((FAIL++))
+sudo incus profile show mon >/dev/null 2>&1 && echo "OK: Profile mon" && ((PASS++)) || echo "FAIL: Profile mon" && ((FAIL++))
+sudo incus profile show ceph >/dev/null 2>&1 && echo "OK: Profile ceph" && ((PASS++)) || echo "FAIL: Profile ceph" && ((FAIL++))
 
-# Volumes
-check "sudo incus storage volume show default postgres-data" "Volume: postgres-data"
-check "sudo incus storage volume show default prometheus-data" "Volume: prometheus-data"
-check "sudo incus storage volume show default grafana-data" "Volume: grafana-data"
-check "sudo incus storage volume show default ceph-data" "Volume: ceph-data"
-check "sudo incus storage volume show default app-data" "Volume: app-data"
+sudo incus storage volume show default postgres-data >/dev/null 2>&1 && echo "OK: Volume postgres-data" && ((PASS++)) || echo "FAIL: Volume postgres-data" && ((FAIL++))
+sudo incus storage volume show default prometheus-data >/dev/null 2>&1 && echo "OK: Volume prometheus-data" && ((PASS++)) || echo "FAIL: Volume prometheus-data" && ((FAIL++))
+sudo incus storage volume show default grafana-data >/dev/null 2>&1 && echo "OK: Volume grafana-data" && ((PASS++)) || echo "FAIL: Volume grafana-data" && ((FAIL++))
+sudo incus storage volume show default ceph-data >/dev/null 2>&1 && echo "OK: Volume ceph-data" && ((PASS++)) || echo "FAIL: Volume ceph-data" && ((FAIL++))
+sudo incus storage volume show default app-data >/dev/null 2>&1 && echo "OK: Volume app-data" && ((PASS++)) || echo "FAIL: Volume app-data" && ((FAIL++))
 
-# Containers running
-check "sudo incus info ctl | grep -q RUNNING" "Container ctl RUNNING"
-check "sudo incus info api | grep -q RUNNING" "Container api RUNNING"
-check "sudo incus info core | grep -q RUNNING" "Container core RUNNING"
-check "sudo incus info db | grep -q RUNNING" "Container db RUNNING"
-check "sudo incus info mon | grep -q RUNNING" "Container mon RUNNING"
-check "sudo incus info ceph | grep -q RUNNING" "Container ceph RUNNING"
+sudo incus info ctl | grep -q RUNNING && echo "OK: Container ctl RUNNING" && ((PASS++)) || echo "FAIL: Container ctl" && ((FAIL++))
+sudo incus info api | grep -q RUNNING && echo "OK: Container api RUNNING" && ((PASS++)) || echo "FAIL: Container api" && ((FAIL++))
+sudo incus info core | grep -q RUNNING && echo "OK: Container core RUNNING" && ((PASS++)) || echo "FAIL: Container core" && ((FAIL++))
+sudo incus info db | grep -q RUNNING && echo "OK: Container db RUNNING" && ((PASS++)) || echo "FAIL: Container db" && ((FAIL++))
+sudo incus info mon | grep -q RUNNING && echo "OK: Container mon RUNNING" && ((PASS++)) || echo "FAIL: Container mon" && ((FAIL++))
+sudo incus info ceph | grep -q RUNNING && echo "OK: Container ceph RUNNING" && ((PASS++)) || echo "FAIL: Container ceph" && ((FAIL++))
 
-# Container connectivity
-check "sudo incus exec ctl -- ping -c 1 api >/dev/null 2>&1" "ctl → api connectivity"
-check "sudo incus exec api -- ping -c 1 db >/dev/null 2>&1" "api → db connectivity"
-check "sudo incus exec db -- ping -c 1 mon >/dev/null 2>&1" "db → mon connectivity"
+sudo incus exec ctl -- ping -c 1 api >/dev/null 2>&1 && echo "OK: ctl -> api connectivity" && ((PASS++)) || echo "FAIL: ctl -> api" && ((FAIL++))
+sudo incus exec api -- ping -c 1 db >/dev/null 2>&1 && echo "OK: api -> db connectivity" && ((PASS++)) || echo "FAIL: api -> db" && ((FAIL++))
+sudo incus exec db -- ping -c 1 mon >/dev/null 2>&1 && echo "OK: db -> mon connectivity" && ((PASS++)) || echo "FAIL: db -> mon" && ((FAIL++))
 
 echo ""
-echo "=========================================="
-echo "Results: ${GREEN}$PASS passed${NC}, ${RED}$FAIL failed${NC}"
-echo "=========================================="
+echo "Results: $PASS passed, $FAIL failed"
 
-if [ $FAIL -eq 0 ]; then
-    echo -e "${GREEN}✅ Infrastructure OK${NC}"
-    exit 0
-else
-    echo -e "${RED}❌ Infrastructure has issues${NC}"
-    exit 1
-fi
+[ $FAIL -eq 0 ] && echo "Infrastructure OK" && exit 0 || echo "Infrastructure has issues" && exit 1
