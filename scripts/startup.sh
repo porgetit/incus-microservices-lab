@@ -3,6 +3,8 @@
 echo "Starting up lab..."
 echo ""
 
+sudo systemctl start incus
+
 sudo incus start ceph && echo "OK: ceph started" || echo "FAIL: ceph"
 sleep 3
 

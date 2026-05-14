@@ -18,5 +18,7 @@ sleep 3
 
 sudo incus stop ctl 2>/dev/null && echo "OK: ctl stopped" || echo "FAIL: ctl"
 
+sudo systemctl stop incus
+
 echo ""
 echo "Lab shutdown complete"
