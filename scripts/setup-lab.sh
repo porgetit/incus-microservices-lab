@@ -34,6 +34,13 @@ sudo chmod +x scripts/containers.sh
 bash scripts/containers.sh
 echo ""
 
+# Mid process validation
+echo ""
+echo "Running post-configuration validation..."
+sudo chmod +x scripts/validate.sh
+bash scripts/validate.sh
+echo ""
+
 echo "=========================================="
 echo "✅ INFRASTRUCTURE DEPLOYMENT COMPLETED"
 echo "=========================================="

@@ -93,4 +93,4 @@ echo "Verify containers:"
 sudo incus list
 echo ""
 echo "Verify volumes:"
-sudo incus storage volume list
+sudo incus storage volume list default
