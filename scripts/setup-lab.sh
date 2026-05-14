@@ -9,17 +9,17 @@ echo "  INCUS MICROSERVICES LAB SETUP"
 echo "=========================================="
 echo ""
 
-# Step 1: Ensure profiles.sh has execute permissions and run it
-echo "[1/5] Setting up Incus profiles..."
+# Step 1: Ensure network.sh has execute permissions and run it
+echo "[1/5] Creating OVN network for the lab..."
+sudo chmod +x scripts/network.sh
+bash scripts/network.sh
+echo ""
+
+# Step 2: Ensure profiles.sh has execute permissions and run it
+echo "[2/5] Setting up Incus profiles..."
 sudo chmod +x scripts/profiles.sh
 bash scripts/profiles.sh
 echo "✅ Profiles created successfully"
-echo ""
-
-# Step 2: Ensure network.sh has execute permissions and run it
-echo "[2/5] Creating OVN network for the lab..."
-sudo chmod +x scripts/network.sh
-bash scripts/network.sh
 echo ""
 
 # Step 3: Ensure volumes.sh has execute permissions and run it

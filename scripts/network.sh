@@ -9,7 +9,8 @@ MANAGED=$(sudo incus network show incusbr0 | grep -E '^\s*managed:' | awk '{prin
 if [ "$MANAGED" = "false" ]; then
     echo "⚠️  incusbr0 existe pero NO es gestionado por Incus"
     echo "Eliminando puente no gestionado..."
-    sudo incus network delete incusbr0 || true
+    sudo ip link set incusbr0 down
+    sudo brctl delbr incusbr0
     
     echo "Recreando incusbr0 como red gestionada por Incus..."
     sudo incus network create incusbr0 \
