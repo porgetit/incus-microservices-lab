@@ -44,8 +44,4 @@ echo "Step 4: Disabling Incus auto-start..."
 sudo systemctl disable incus
 echo "Incus auto-start disabled."
 
-echo "Step 5: Launching Incus web UI..."
-sudo incus webui
-echo "Incus web UI launched. Check the terminal output for the link to open in your browser."
-
 echo "Incus installation completed successfully."
