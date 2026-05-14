@@ -10,7 +10,7 @@ if [ "$MANAGED" = "false" ]; then
     echo "⚠️  incusbr0 existe pero NO es gestionado por Incus"
     echo "Eliminando puente no gestionado..."
     sudo ip link set incusbr0 down
-    sudo brctl delbr incusbr0
+    sudo ip link delete incusbr0
     
     echo "Recreando incusbr0 como red gestionada por Incus..."
     sudo incus network create incusbr0 \
