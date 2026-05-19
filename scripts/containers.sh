@@ -6,7 +6,7 @@ echo "Starting containers creation and configuration"
 set -e  # Exit on any error
 
 # Launch ctl
-echo "[] Launching ctl container"
+echo "[1/6] Launching ctl container"
 if ! sudo incus info ctl >/dev/null 2>&1; then
     sudo incus launch images:debian/13 ctl -p ctl -p default -n lab-net
     echo "OK: ctl launched"
@@ -15,7 +15,7 @@ else
 fi
 
 # Launch api with app-data volume
-echo "[] Launching app-data container"
+echo "[2/6] Launching app-data container"
 if ! sudo incus info api >/dev/null 2>&1; then
     sudo incus launch images:debian/13 api -p api -p default -n lab-net
     if sudo incus storage volume show default app-data >/dev/null 2>&1; then
@@ -29,7 +29,7 @@ else
 fi
 
 # Launch core with app-data volume
-echo "[] Launching core container"
+echo "[3/6] Launching core container"
 if ! sudo incus info core >/dev/null 2>&1; then
     sudo incus launch images:debian/13 core -p core -p default -n lab-net
     if sudo incus storage volume show default app-data >/dev/null 2>&1; then
@@ -43,7 +43,7 @@ else
 fi
 
 # Launch db with postgres-data volume
-echo "[] Launching db container"
+echo "[4/6] Launching db container"
 if ! sudo incus info db >/dev/null 2>&1; then
     sudo incus launch images:debian/13 db -p db -p default -n lab-net
     if sudo incus storage volume show default postgres-data >/dev/null 2>&1; then
@@ -57,7 +57,7 @@ else
 fi
 
 # Launch mon with prometheus-data and grafana-data volumes
-echo "[] Launching mon container"
+echo "[5/6] Launching mon container"
 if ! sudo incus info mon >/dev/null 2>&1; then
     sudo incus launch images:debian/13 mon -p mon -p default -n lab-net
     if sudo incus storage volume show default prometheus-data >/dev/null 2>&1; then
@@ -76,7 +76,7 @@ else
 fi
 
 # Launch ceph with ceph-data volume
-echo "[] Launching ceph container"
+echo "[6/6] Launching ceph container"
 if ! sudo incus info ceph >/dev/null 2>&1; then
     sudo incus launch images:debian/13 ceph -p ceph -p default -n lab-net
     if sudo incus storage volume show default ceph-data >/dev/null 2>&1; then
