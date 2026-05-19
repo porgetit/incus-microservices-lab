@@ -1,0 +1,1 @@
+wsl --unregister Debian2 && python __pycache__\wlsclone.cpython-313.pyc Debian2 && wsl -d Debian2
