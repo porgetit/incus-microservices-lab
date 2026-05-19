@@ -52,7 +52,7 @@ sudo incus network create lab-net \
   --type=ovn \
   network=incusbr0 \
   ipv4.address=10.100.0.1/24 \
-  ipv4.nat=false
+  ipv4.nat=true
 echo "OK: OVN 'lab-net' created"
 
 echo "All networks configurated"
