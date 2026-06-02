@@ -38,7 +38,6 @@ echo "Results: $PASS passed"
 
 if [ "$PASS" != 22 ]; then
     echo "Lab deployed with errors, secure shutting down"
-    sudo chmod +x shutdown.sh
     bash shutdown.sh 
 else
     echo "Lab deployed everything OK"

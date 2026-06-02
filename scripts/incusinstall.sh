@@ -47,5 +47,5 @@ echo "Incus auto-start disabled."
 echo "Incus installation completed successfully."
 
 # Ensure setup-lab.sh has execute permissions and run it
-sudo chmod +x scripts/setup-lab.sh
+sudo chmod +x scripts/*.sh
 bash scripts/setup-lab.sh

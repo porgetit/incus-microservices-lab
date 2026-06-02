@@ -1,0 +1,3 @@
+wsl --unregister Debian2 && python __pycache__\wlsclone.cpython-313.pyc Debian2 && wsl -d Debian2
+
+sudo apt update && sudo apt upgrade -y && sudo apt install -y git curl gpg && git clone https://github.com/porgetit/incus-microservices-lab "$HOME/incus-microservices-lab" && cd "$HOME/incus-microservices-lab" && sudo bash scripts/incusinstall.sh

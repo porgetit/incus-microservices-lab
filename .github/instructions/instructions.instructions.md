@@ -17,7 +17,7 @@ This workspace manages a containerized microservices lab using Incus on Debian 1
 - **Naming Conventions**:
   - Profiles/Containers: ctl, api, core, db, mon, ceph.
   - Files: Descriptive but short (e.g., setup-lab.sh).
-- **Traceability**: Log every change in `choices.md` with format: `Date | Description | Files | Rationale`.
+- **Traceability**: Log every change in `AGENTS.md` with format: `Date | Description | Files | Rationale`.
 - **Language**: English for code/comments; Spanish allowed for detailed docs.
 - **IaC Preference**: Use OpenTofu for automation, but allow manual scripts for testing/validation.
 
